@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#while true; do
+#	notify-send -u critical "Focus" "Time to work."
+#	echo 'notify-send -u critical "Hey $(whoami)" "Time to take a break."' | at now + 25 minutes
+#	break
+#done
+
+i=0
+progress=""
+
+while true; do
+	notify-send -u critical "Focus" "Time to work."
+	echo "Press Enter to start your work period."
+	read response
+	sleep 1s
+	progress=${progress}" \xE2\x9C\x93"
+	echo -e $progress
+	#echo -e "\xE2\x9C\x93" #print a check mark, UTF-8 code
+	i=$((i + 1))
+	if [ "$i" -lt 4 ]; then
+		notify-send -u critical "Relax" "Time to take a short break."
+		echo "Press Enter to begin your break period." 
+		read response
+		sleep 1s
+	else
+		notify-send -u critical "Relax - You've earned it." "Time to take a longer break."
+		echo "Press Enter to begin your longer break period." 
+		read response
+		sleep 1s
+		i=0
+	fi	
+
+	#break
+done
