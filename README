@@ -5,4 +5,7 @@ Pomodoro Timer provides a convenient way, timer and notifications, to implement 
 The Pomodoro Technique can be found here: http://pomodorotechnique.com/
 
 USAGE:
-Place the executable file or a symbolic link in your PATH.
+Place the executable file or a symbolic link in your PATH and extract the files into ~/pomodorotimer
+
+To run the program use: pomodorotimer &
+Then close the terminal.

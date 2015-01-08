@@ -21,32 +21,83 @@ progress=""
 
 pomodoro_length=25
 short_break_length=5
-long_break_length=15
+long_break_length=30
+
+exit_failure()
+{
+	zenity --info --title="Pomodoro Timer" --text="$(echo -e "Pomodoros Accomplished: $progress")"	
+	exit 1
+}
+
+notify_focus()
+{
+	notify-send -u critical -i ~/pomodorotimer/pomodoro.png "Focus" "Time to work."
+}
+
+notify_short_relax()
+{
+	notify-send -u critical -i ~/pomodorotimer/pomodoro.png "Relax" "Time to take a short break."
+}
+
+notify_long_relax()
+{
+	notify-send -u critical -i ~/pomodorotimer/pomodoro.png "Relax - You've earned it." "Time to take a longer break."
+}
+
+zenity_notify_pomodoro()
+{
+	zenity --info --title="Pomodoro Timer" --text="$(echo -e "Your break is over.\n\nClick OK to start your $pomodoro_length minute Pomodoro.")"
+}
+
+zenity_notify_short_break()
+{
+	zenity --info --title="Pomodoro Timer" --text="$(echo -e "Your Pomodoro is over.\nPomodoros Accomplished: $progress\n\nClick OK to start your $short_break_length minute break period.")"
+}
+
+zenity_notify_long_break()
+{
+	zenity --info --title="Pomodoro Timer" --text="$(echo -e "Your Pomodoro is over.\nPomodoros Accomplished: $progress\n\nClick OK to start your $long_break_length minute break period.")"
+}
+
+##### Main ####
+
+notify_focus
+sleep ${pomodoro_length}m
+progress=${progress}" \xE2\x9C\x93" #Add a check mark (UTF-8 code) to progress made
+i=$((i + 1))
+
+zenity_notify_short_break
+if [ $? != 0 ]; then
+	exit_failure
+fi
+notify_short_relax
+sleep ${short_break_length}m
 
 while true; do
-	notify-send -u critical -i ~/pomodorotimer/pomodoro.png "Focus" "Time to work."
-	echo "Press Enter to start your Pomodoro."
-	read response
-	echo "Your $pomodoro_length minute Pomodoro has begun."
+	zenity_notify_pomodoro
+	if [ $? != 0 ]; then
+		exit_failure
+	fi
+	notify_focus
 	sleep ${pomodoro_length}m
 	progress=${progress}" \xE2\x9C\x93" #Add a check mark (UTF-8 code) to progress made
-	echo -e "Pomodoros Accomplished: $progress"
 	i=$((i + 1))
 	if [ "$i" -lt 4 ]; then
-		notify-send -u critical -i ~/pomodorotimer/pomodoro.png "Relax" "Time to take a short break."
-		echo "Press Enter to begin your break period." 
-		read response
-		echo "Your $short_break_length minute break has begun."
+		zenity_notify_short_break
+		if [ $? != 0 ]; then
+			exit_failure
+		fi
+		notify_short_relax
 		sleep ${short_break_length}m
 	else
-		notify-send -u critical -i ~/pomodorotimer/pomodoro.png "Relax - You've earned it." "Time to take a longer break."
-		echo "Press Enter to begin your longer break period." 
-		read response
-		echo "Your $long_break_length minute break has begun."
+		zenity_notify_long_break
+		if [ $? != 0 ]; then
+			exit_failure
+		fi
+		notify_long_relax
 		sleep ${long_break_length}m
 		i=0
 	fi	
-
 done
 
 exit 0
