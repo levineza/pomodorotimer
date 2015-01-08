@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Pomodoro Timer
+Comment=A tool to aid in the execution of the Pomodoro Technique
+Exec=pomodorotimer
+Icon=/home/zachariah/pomodorotimer/pomodoro.png
+Terminal=false
+Type=Application
+Categories=Utility;Application;

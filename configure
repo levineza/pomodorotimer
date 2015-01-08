@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if cd ~/bin; then
+	ln -s ~/pomodorotimer/pomodorotimer pomodorotimer
+fi 
+
+if cd ~/.local/share/applications; then
+	ln -s ~/pomodorotimer/pomodorotimer.desktop pomodorotimer.desktop
+fi
