@@ -1,13 +1,34 @@
 #!/bin/bash
 
+#	Pomodoro Timer - a tool to aid in the execution of the Pomodoro Technique
+#	Copyright (C) 2015  Zachariah Levine
+#
+#	This program is free software: you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation, either version 3 of the License, or
+#	(at your option) any later version.
+#
+#	This program is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	GNU General Public License for more details.
+#
+#	You should have received a copy of the GNU General Public License
+#	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 i=0
 progress=""
 
+pomodoro_length=25
+short_break_length=5
+long_break_length=15
+
 while true; do
 	notify-send -u critical -i ~/pomodorotimer/pomodoro.png "Focus" "Time to work."
-	echo "Press Enter to start your work period."
+	echo "Press Enter to start your Pomodoro."
 	read response
-	sleep 1s
+	echo "Your $pomodoro_length minute Pomodoro has begun."
+	sleep ${pomodoro_length}m
 	progress=${progress}" \xE2\x9C\x93" #Add a check mark (UTF-8 code) to progress made
 	echo -e "Pomodoros Accomplished: $progress"
 	i=$((i + 1))
@@ -15,12 +36,14 @@ while true; do
 		notify-send -u critical -i ~/pomodorotimer/pomodoro.png "Relax" "Time to take a short break."
 		echo "Press Enter to begin your break period." 
 		read response
-		sleep 1s
+		echo "Your $short_break_length minute break has begun."
+		sleep ${short_break_length}m
 	else
 		notify-send -u critical -i ~/pomodorotimer/pomodoro.png "Relax - You've earned it." "Time to take a longer break."
 		echo "Press Enter to begin your longer break period." 
 		read response
-		sleep 1s
+		echo "Your $long_break_length minute break has begun."
+		sleep ${long_break_length}m
 		i=0
 	fi	
 
